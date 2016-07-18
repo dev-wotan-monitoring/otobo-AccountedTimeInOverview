@@ -1,0 +1,27 @@
+=encoding utf-8
+
+=head1 NAME
+
+AccountedTimeInOverview - Show accounted time of a ticket in ticket overviews
+
+=head1 DESCRIPTION
+
+This is a very simple addon that displays the accounted time of a ticket in
+ticket overviews (currently only in the Small mode).
+
+You have to enable the column "AccountedTime" for the screens where it should
+be available via SysConfig (e.g. Ticket -> Frontend::Agent::Ticket::ViewStatus).
+
+This addon might be incompatible with other addons that change the overview.
+
+=head1 BUGTRACKER AND CODEREPOSITORY
+
+A bugtracker and the code repository are available at 
+L<https://github.com/reneeb/otrs-AccountedTimeInOverview>
+
+=head1 AUTHOR AND LICENSE
+
+This module is licensed under the terms of AGPL 3.0.
+
+Author: Renée Bäcker C<< <otrs@perl-services.de> >>
+
