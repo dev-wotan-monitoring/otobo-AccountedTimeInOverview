@@ -1,6 +1,6 @@
 {
     "name": "AccountedTimeInOverview",
-    "version": "5.0.1",
+    "version": "5.0.2",
     "framework": [
         "5.0.x"
     ],
@@ -10,7 +10,8 @@
     },
     "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007",
     "description" : {
-        "en": "Show the accounted time in ticket overviews",
-        "de": "Zeigt die gebuchte Zeit in den Ticketübersichten an"
+        "en": "Show the accounted time in ticket overviews.",
+        "de": "Zeigt die gebuchte Zeit in den Ticketübersichten an.",
+        "hu": "Az elszámolt idő megjelenítése a jegyáttekintőkben."
     }
 }

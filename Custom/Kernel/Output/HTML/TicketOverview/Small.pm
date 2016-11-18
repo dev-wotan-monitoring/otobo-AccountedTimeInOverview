@@ -12,6 +12,7 @@ use strict;
 use warnings;
 
 use Kernel::System::VariableCheck qw(:all);
+use Kernel::Language qw(Translatable);
 
 our @ObjectDependencies = (
     'Kernel::Config',
@@ -133,7 +134,7 @@ sub new {
         FieldFilter => $Self->{DynamicFieldFilter} || {},
     );
 
-    # hash with all valid sortable columuns (taken from TicketSearch)
+    # hash with all valid sortable columns (taken from TicketSearch)
     # SortBy  => 'Age',   # Created|Owner|Responsible|CustomerID|State|TicketNumber|Queue
     # |Priority|Type|Lock|Title|Service|Changed|SLA|PendingTime|EscalationTime
     # | EscalationUpdateTime|EscalationResponseTime|EscalationSolutionTime
@@ -187,7 +188,7 @@ sub new {
     # get dynamic field backend object
     my $DynamicFieldBackendObject = $Kernel::OM->Get('Kernel::System::DynamicField::Backend');
 
-    # get filtrable dynamic fields
+    # get filterable dynamic fields
     # cycle trough the activated dynamic fields for this screen
     DYNAMICFIELD:
     for my $DynamicFieldConfig ( @{ $Self->{DynamicField} } ) {
@@ -198,7 +199,7 @@ sub new {
             Behavior           => 'IsFiltrable',
         );
 
-        # if the dynamic field is filtrable add it to the AvailableFilterableColumns hash
+        # if the dynamic field is filterable add it to the AvailableFilterableColumns hash
         if ($IsFiltrable) {
             $Self->{AvailableFilterableColumns}->{ 'DynamicField_' . $DynamicFieldConfig->{Name} } = 1;
         }
@@ -263,7 +264,7 @@ sub ActionRow {
             Name => 'DocumentActionRowBulk',
             Data => {
                 %Param,
-                Name => 'Bulk',
+                Name => Translatable('Bulk'),
             },
         );
     }
@@ -654,7 +655,8 @@ sub Run {
                 }
 
                 # set title description
-                my $TitleDesc = $OrderBy eq 'Down' ? 'sorted descending' : 'sorted ascending';
+                my $TitleDesc
+                    = $OrderBy eq 'Down' ? Translatable('sorted descending') : Translatable('sorted ascending');
                 $TitleDesc = $LayoutObject->{LanguageObject}->Translate($TitleDesc);
                 $Title .= ', ' . $TitleDesc;
             }
@@ -701,9 +703,9 @@ sub Run {
             );
 
             $CSS = $Column;
-            my $Title = $Column;
+            my $Title = $LayoutObject->{LanguageObject}->Translate($Column);
 
-            # ouput overal block so TicketNumber as well as other columns can be ordered
+            # output overall block so TicketNumber as well as other columns can be ordered
             $LayoutObject->Block(
                 Name => 'OverviewNavBarPageTicketHeader',
                 Data => {},
@@ -722,7 +724,8 @@ sub Run {
                     }
 
                     # add title description
-                    my $TitleDesc = $OrderBy eq 'Down' ? 'sorted ascending' : 'sorted descending';
+                    my $TitleDesc
+                        = $OrderBy eq 'Down' ? Translatable('sorted ascending') : Translatable('sorted descending');
                     $TitleDesc = $LayoutObject->{LanguageObject}->Translate($TitleDesc);
                     $Title .= ', ' . $TitleDesc;
                 }
@@ -747,8 +750,8 @@ sub Run {
                     $TranslatedWord = $LayoutObject->{LanguageObject}->Translate($Column);
                 }
 
-                my $FilterTitle     = $Column;
-                my $FilterTitleDesc = 'filter not active';
+                my $FilterTitle     = $TranslatedWord;
+                my $FilterTitleDesc = Translatable('filter not active');
                 if (
                     $Self->{StoredFilters} &&
                     (
@@ -758,7 +761,7 @@ sub Run {
                     )
                 {
                     $CSS .= ' FilterActive';
-                    $FilterTitleDesc = 'filter active';
+                    $FilterTitleDesc = Translatable('filter active');
                 }
                 $FilterTitleDesc = $LayoutObject->{LanguageObject}->Translate($FilterTitleDesc);
                 $FilterTitle .= ', ' . $FilterTitleDesc;
@@ -841,7 +844,7 @@ sub Run {
                 # verify if column is filterable and sortable
                 elsif ( $Self->{ValidFilterableColumns}->{$Column} ) {
 
-                    # variable to save the filter's html code
+                    # variable to save the filter's HTML code
                     my $ColumnFilterHTML = $Self->_InitialColumnFilter(
                         ColumnName    => $Column,
                         Label         => $Column,
@@ -905,7 +908,8 @@ sub Run {
                     }
 
                     # add title description
-                    my $TitleDesc = $OrderBy eq 'Down' ? 'sorted ascending' : 'sorted descending';
+                    my $TitleDesc
+                        = $OrderBy eq 'Down' ? Translatable('sorted ascending') : Translatable('sorted descending');
                     $TitleDesc = $LayoutObject->{LanguageObject}->Translate($TitleDesc);
                     $Title .= ', ' . $TitleDesc;
                 }
@@ -931,11 +935,11 @@ sub Run {
                     $TranslatedWord = $LayoutObject->{LanguageObject}->Translate($Column);
                 }
 
-                my $FilterTitle     = $Column;
-                my $FilterTitleDesc = 'filter not active';
+                my $FilterTitle     = $TranslatedWord;
+                my $FilterTitleDesc = Translatable('filter not active');
                 if ( $Self->{StoredFilters} && $Self->{StoredFilters}->{ $Column . 'IDs' } ) {
                     $CSS .= ' FilterActive';
-                    $FilterTitleDesc = 'filter active';
+                    $FilterTitleDesc = Translatable('filter active');
                 }
                 $FilterTitleDesc = $LayoutObject->{LanguageObject}->Translate($FilterTitleDesc);
                 $FilterTitle .= ', ' . $FilterTitleDesc;
@@ -961,7 +965,7 @@ sub Run {
                         $Css .= ' Hidden';
                     }
 
-                    # variable to save the filter's html code
+                    # variable to save the filter's HTML code
                     my $ColumnFilterHTML = $Self->_InitialColumnFilter(
                         ColumnName    => $Column,
                         Label         => $Column,
@@ -1006,7 +1010,7 @@ sub Run {
                         $Css = 'Hidden';
                     }
 
-                    # variable to save the filter's html code
+                    # variable to save the filter's HTML code
                     my $ColumnFilterHTML = $Self->_InitialColumnFilter(
                         ColumnName    => $Column,
                         Label         => $Column,
@@ -1113,15 +1117,16 @@ sub Run {
                         }
 
                         # add title description
-                        my $TitleDesc = $OrderBy eq 'Down' ? 'sorted ascending' : 'sorted descending';
+                        my $TitleDesc
+                            = $OrderBy eq 'Down' ? Translatable('sorted ascending') : Translatable('sorted descending');
                         $TitleDesc = $LayoutObject->{LanguageObject}->Translate($TitleDesc);
                         $Title .= ', ' . $TitleDesc;
                     }
 
-                    my $FilterTitleDesc = 'filter not active';
+                    my $FilterTitleDesc = Translatable('filter not active');
                     if ( $Self->{StoredFilters} && $Self->{StoredFilters}->{$Column} ) {
                         $CSS .= ' FilterActive';
-                        $FilterTitleDesc = 'filter active';
+                        $FilterTitleDesc = Translatable('filter active');
                     }
                     $FilterTitleDesc = $LayoutObject->{LanguageObject}->Translate($FilterTitleDesc);
                     $FilterTitle .= ', ' . $FilterTitleDesc;
@@ -1138,7 +1143,7 @@ sub Run {
 
                     if ( $Self->{ValidFilterableColumns}->{$DynamicFieldName} ) {
 
-                        # variable to save the filter's html code
+                        # variable to save the filter's HTML code
                         my $ColumnFilterHTML = $Self->_InitialColumnFilter(
                             ColumnName    => $DynamicFieldName,
                             Label         => $Label,
@@ -1185,7 +1190,7 @@ sub Run {
 
                     if ( $Self->{ValidFilterableColumns}->{$DynamicFieldName} ) {
 
-                        # variable to save the filter's html code
+                        # variable to save the filter's HTML code
                         my $ColumnFilterHTML = $Self->_InitialColumnFilter(
                             ColumnName    => $DynamicFieldName,
                             Label         => $Label,
@@ -1238,7 +1243,7 @@ sub Run {
 
                     if ( $Self->{ValidFilterableColumns}->{$DynamicFieldName} ) {
 
-                        # variable to save the filter's html code
+                        # variable to save the filter's HTML code
                         my $ColumnFilterHTML = $Self->_InitialColumnFilter(
                             ColumnName    => $DynamicFieldName,
                             Label         => $Label,
@@ -1279,7 +1284,7 @@ sub Run {
 
                     if ( $Self->{ValidFilterableColumns}->{$DynamicFieldName} ) {
 
-                        # variable to save the filter's html code
+                        # variable to save the filter's HTML code
                         my $ColumnFilterHTML = $Self->_InitialColumnFilter(
                             ColumnName    => $DynamicFieldName,
                             Label         => $Label,
@@ -1386,7 +1391,7 @@ sub Run {
                 Name => 'GeneralOverviewRow',
             );
             $LayoutObject->Block(
-                Name => 'Bulk',
+                Name => Translatable('Bulk'),
                 Data => { %Article, %UserInfo },
             );
         }
@@ -1685,7 +1690,7 @@ sub Run {
     );
 
     # set column filter form, to correctly fill the column filters is necessary to pass each
-    #    overview some information in the AJAX call, for examle the fixed Filters or NavBarFilters
+    #    overview some information in the AJAX call, for example the fixed Filters or NavBarFilters
     #    and also other values like the Queue in AgentTicketQueue, otherwise the filters will be
     #    filled with default restrictions, resulting in more options than the ones that the
     #    available tickets should provide, see Bug#9902
@@ -1881,7 +1886,7 @@ sub FilterContent {
         }
     }
 
-    # variable to save the filter's html code
+    # variable to save the filter's HTML code
     my $ColumnFilterJSON = $Self->_ColumnFilterJSON(
         ColumnName    => $HeaderColumn,
         Label         => $LabelColumn,
