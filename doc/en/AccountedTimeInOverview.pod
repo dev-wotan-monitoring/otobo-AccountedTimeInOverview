@@ -3,6 +3,7 @@
 =head1 NAME
 
 AccountedTimeInOverview - Show accounted time of a ticket in ticket overviews
+ Forked reneeb / otrs-AccountedTimeInOverview for migrating to OTOBO
 
 =head1 DESCRIPTION
 
@@ -17,11 +18,12 @@ This addon might be incompatible with other addons that change the overview.
 =head1 BUGTRACKER AND CODEREPOSITORY
 
 A bugtracker and the code repository are available at 
-L<https://github.com/reneeb/otrs-AccountedTimeInOverview>
+Lhttps://github.com/dev-wotan-monitoring/otobo-AccountedTimeInOverview
 
 =head1 AUTHOR AND LICENSE
 
 This module is licensed under the terms of AGPL 3.0.
 
 Author: Renée Bäcker C<< <otrs@perl-services.de> >>
+Forked 2022-02-25, Philipp Ghirardini, GH-Informatik GmbH
 
